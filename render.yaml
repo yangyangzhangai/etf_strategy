@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: etf-strategy-api-yangyangzhangai
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: main
+    autoDeployTrigger: commit
+    dockerfilePath: ./etf-timing-system/backend/Dockerfile
+    dockerContext: ./etf-timing-system/backend
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: ETF_DATA_MODE
+        value: auto
+      - key: ETF_CACHE_DB
+        value: /data/cache.sqlite3
+      - key: ETF_API_CORS_ORIGINS
+        value: https://etf-strategy.vercel.app
+      - key: ETF_AKTOOLS_BASE_URL
+        value: ""
+      - key: ETF_MOOTDX_ENABLED
+        value: "false"
+      - key: ETF_UPLOAD_MAX_BYTES
+        value: "8000000"
