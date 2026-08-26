@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "etf-timing-backend"
+version = "0.1.0"
+description = "Data collection and read-only API for the ETF timing dashboard"
+requires-python = ">=3.11"
+dependencies = [
+  "akshare==1.18.91",
+  "fastapi>=0.116,<1",
+  "mootdx>=0.11,<0.12",
+  "openpyxl>=3.1,<4",
+  "pydantic>=2.11,<3",
+  "python-multipart>=0.0.20,<1",
+  "requests>=2.32,<3",
+  "uvicorn[standard]>=0.35,<1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx>=0.25,<0.26",
+  "pytest>=8.4,<9",
+  "ruff>=0.12,<1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+etf-timing-refresh = "etf_timing.jobs:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]

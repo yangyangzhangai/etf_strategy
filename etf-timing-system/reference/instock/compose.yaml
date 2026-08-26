@@ -1,0 +1,35 @@
+services:
+  db:
+    image: mariadb:11
+    environment:
+      MARIADB_ROOT_PASSWORD: ${INSTOCK_DB_PASSWORD}
+      MARIADB_DATABASE: instockdb
+    volumes:
+      - instock-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  instock:
+    image: mayanghua/instock:latest
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      db_host: db
+      db_user: root
+      db_password: ${INSTOCK_DB_PASSWORD}
+      db_database: instockdb
+      db_port: 3306
+    ports:
+      - "9988:9988"
+    volumes:
+      - ./proxy.txt:/data/InStock/instock/config/proxy.txt
+      - ./eastmoney_cookie.txt:/data/InStock/instock/config/eastmoney_cookie.txt
+    restart: unless-stopped
+
+volumes:
+  instock-db:

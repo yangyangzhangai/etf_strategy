@@ -1,0 +1,17 @@
+services:
+  api:
+    build:
+      context: ./backend
+    environment:
+      ETF_DATA_MODE: auto
+      ETF_CACHE_DB: /data/cache.sqlite3
+      ETF_MOOTDX_ENABLED: "true"
+      ETF_API_CORS_ORIGINS: ${ETF_API_CORS_ORIGINS:-http://localhost:3000}
+    ports:
+      - "8000:8000"
+    volumes:
+      - etf-data:/data
+    restart: unless-stopped
+
+volumes:
+  etf-data:
