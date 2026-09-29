@@ -1,6 +1,8 @@
 import type { ETFDashboard, ETFListItem, HealthStatus, ImportResult, MarketOverview } from './types';
 
-const baseUrl = process.env.NEXT_PUBLIC_ETF_API_BASE_URL ?? 'http://127.0.0.1:8000/api/v1';
+// Production uses the FastAPI service mounted on the same Vercel domain.
+// An override remains available for unusual local or preview setups.
+const baseUrl = process.env.NEXT_PUBLIC_ETF_API_BASE_URL ?? '/api/v1';
 
 async function request<T>(path: string): Promise<T> {
   const response = await fetch(`${baseUrl}${path}`, { cache: 'no-store' });

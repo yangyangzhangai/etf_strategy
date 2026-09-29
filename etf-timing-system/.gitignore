@@ -1,5 +1,6 @@
 # dependencies
 /node_modules
+/frontend/node_modules
 /.venv/
 /.pnp
 .pnp.*
@@ -14,8 +15,10 @@
 
 # next.js
 /.next/
+/frontend/.next/
 /.vinext/
 /out/
+/frontend/out/
 
 # misc
 .DS_Store

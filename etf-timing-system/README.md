@@ -15,16 +15,18 @@
 
 ```text
 etf-timing-system/
-├─ app/                         # Next.js / React 看板
-├─ lib/                         # 前端 API 类型与示例回退数据
+├─ frontend/
+│  ├─ app/                    # Next.js / React 看板
+│  └─ lib/                    # 前端 API 类型与示例回退数据
 ├─ backend/
+│  ├─ main.py                 # Vercel FastAPI 服务入口
 │  ├─ src/etf_timing/
 │  │  ├─ data/                  # 免费组合源、AKShare、mootdx、SQLite 缓存
 │  │  ├─ services/              # 市场与 ETF 数据组织、原始指标计算
 │  │  └─ main.py                # FastAPI 只读 API
 │  └─ tests/
 ├─ docs/                        # 架构、任务、规范与数据字典
-└─ next.config.ts               # 标准 Next.js 配置
+└─ vercel.json                 # 单项目的前后端 Services 路由
 ```
 
 ## 本地启动
@@ -45,6 +47,7 @@ etf-timing-system/
 3. 新终端启动前端：
 
    ```powershell
+   cd frontend
    npm install
    npm run dev
    ```
@@ -80,6 +83,16 @@ etf-timing-system/
 建议用 Windows 任务计划程序在交易日 17:35 调用。任务会刷新全 A、ETF 总表和六只自选 ETF 历史；单个数据源失败不会中断其他标的。
 
 详细说明见 [架构](docs/ARCHITECTURE.md)、[任务拆分](docs/PROJECT_TASKS.md)、[代码规范](docs/CODE_STANDARDS.md) 和 [数据字典](docs/DATA_CATALOG.md)。
+
+## Vercel 单项目部署
+
+`vercel.json` 使用 Vercel Services 在同一个项目中同时构建 `frontend/` 的
+Next.js 看板和 `backend/` 的 FastAPI 服务。`/api/v1/*` 路由到后端，其他路径
+路由到前端，因此线上不需要 `NEXT_PUBLIC_ETF_API_BASE_URL` 或 CORS 环境变量。
+
+Vercel 函数只有 `/tmp` 可写，线上 SQLite 会自动放在
+`/tmp/etf-timing/cache.sqlite3`。它是临时缓存，Excel 导入和历史缓存若需永久保留，
+需在后续版本改用持久化数据库。
 
 ## 数据源说明
 
