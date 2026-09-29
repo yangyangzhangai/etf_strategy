@@ -1,0 +1,15 @@
+node_modules/
+frontend/node_modules/
+.venv/
+.next/
+frontend/.next/
+.vinext/
+.wrangler/
+dist/
+reference/
+**/__pycache__/
+**/.pytest_cache/
+**/.ruff_cache/
+*.py[cod]
+.codex-*.log
+backend/data/*.sqlite3*

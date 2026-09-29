@@ -12,6 +12,8 @@
 
 # testing
 /coverage
+**/.pytest_cache/
+**/.ruff_cache/
 
 # next.js
 /.next/
